@@ -3,6 +3,7 @@ import notesReducer  from '../reducers/notes';
 // import Note from './Note'
 import NoteList from './NoteList';
 import AddNoteForm from './AddNoteForm';
+import NotesContext from '../context/notes-context';
 
 const NoteApp = () => {
 
@@ -30,15 +31,7 @@ const NoteApp = () => {
     //     setBody('')
     // }
 
-    const removeNote = (title) => {
-       // setNotes(notes.filter((note) => note.title !== title ))
-
-       dispatch({
-          type: 'REMOVE_NOTE',
-          title
-       })
-
-    }
+    
 
     useEffect(() => {  //this will be fired only once when the page is refreshed so that before refreshing it store the data into localStorage
         const notes = JSON.parse(localStorage.getItem('notes'))
@@ -56,13 +49,15 @@ const NoteApp = () => {
     }, [notes])
 
     return (
-        <div>
+        <NotesContext.Provider value={{ notes, dispatch }}>
           <h1>Notes</h1>
-                <NoteList notes={notes} removeNote={removeNote} />
-                <AddNoteForm dispatch={dispatch}/>
+          {/*<NoteList notes={notes} removeNote={removeNote} />*/}
+          <NoteList />
+          {/* } <AddNoteForm dispatch={dispatch} /> */}
+          
+          <AddNoteForm />
         
-        
-        </div>
+        </NotesContext.Provider>
     )
 }
 
